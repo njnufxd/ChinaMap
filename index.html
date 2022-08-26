@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中国地图</title>
+  <script src="./JS/echarts.min.js"></script>
+  <script src="./JS/china.js"></script>
+    <script src="./JS/data.js"></script>
+    <script src="//api.map.baidu.com/api?v=1.0&type=webgl&ak=ZFDS8xNqdiYfbHr1ske9vNhQ2yDG3GnQ"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.154/dist/mapvgl.min.js"></script>
+
+    <!-- 如果使用到Three.js相关的图层需要引用 -->
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.154/dist/mapvgl.threelayers.min.js"></script>
+    <script src="https://unpkg.com/mapvgl/dist/mapvgl.min.js"></script>
+
+    <!-- 如果使用到Three.js相关的图层需要引用 -->
+    <script src="https://unpkg.com/mapvgl/dist/mapvgl.threelayers.min.js"></script>
+</head>
+<body>
+    <div id="mainMap" style="width: 800px; height: 500px;"></div>
+    <script type="text/javascript">
+        var mymap=echarts.init(document.getElementById('mainMap'));
+        var mapName='china'
+        var name_title="昆曲微博IP分布"
+        var option={
+            title:{
+                text:name_title,
+                x:'center',
+                textStyle:{
+                    fontSize:36
+                },
+            },
+            tooltip:{
+                tigger:'item',
+                formatter:function (params){
+                    var toolTiphtml=''
+                    if(isNaN(params.value)){
+                        toolTiphtml=params.name+'0'
+                    }else{
+                        toolTiphtml=params.name+' ip数：'+params.value
+                    }
+                    return toolTiphtml;
+                }
+            },
+            toolbox:{
+                feature:{
+                    saveAsImage:{}
+                }
+            },
+            visualMap:{
+                show:true,
+                left:'left',
+                top:'middle',
+                seriesIndex:[0],
+                type:'piecewise',
+                pieces:[
+                    {min:0,max:10,color:'#ccff99'},
+                    {min:11,max:20,color:'#ffff66'},
+                    {min:21,max:40,color:'#ffcc33'},
+                    {min:41,max:60,color:'#ff6600'},
+                    {min:61,max:80,color:'#ff6666'},
+                    {min:81,max:100,color:'#ff0000'}
+                ],
+                textStyle: {
+                    color:'#000000',
+                    fontSize:20,
+                }
+            },
+            geo:{
+                show:true,
+                map:mapName,
+                label:{
+                    normal:{
+                        show:true,
+                        fontSize:10,
+                    },
+                    emphasis:{
+                        show:true,
+                    }
+                },
+                roam:false,
+                itemStyle:{
+                    normal: {
+                        areaColor:'#888888',
+                        borderColor:'#FFFFFF',
+                    },
+                    emphasis: {
+                        areaColor: '#33ffff',
+                    }
+
+                }
+            },
+            series:[{
+                type:'map',
+                map:'china',
+                geoIndex:0,
+                data:data
+            }]
+        }
+        mymap.setOption(option);
+    </script>
+</body>
+</html>
